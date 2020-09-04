@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -33,8 +34,9 @@ public class PubSubCloudFunctionUploadFileToGCPBucket implements BackgroundFunct
 
     private static String write(String message) {
         try {
+            String data = new String(Base64.getDecoder().decode(message));
             List<String[]> strings = new ArrayList<>();
-            strings.add(message.split(","));
+            strings.add(data.split(","));
             csvWriterOneByOne(strings, "writtenOneByOne.csv");
             return uploadObject("zooohooo", "sabdeep_test_function_uploads", "writtenOneByOne.csv", "writtenOneByOne.csv");
 
